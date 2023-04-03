@@ -1,15 +1,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const mongoose = require('mongoose');
-
+const authRoutes = require('./routes/v1/auth.Route')
 
 
 // middleware 
 app.use(express.json());
 app.use(cors());
 
-
+app.use(authRoutes)
 
 
 // api checking
@@ -26,7 +25,6 @@ app.all("*", (req, res) => {
 
 // Global error Handler
 app.use(errorHandler) ;
-
 
 
 
