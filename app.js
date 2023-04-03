@@ -1,14 +1,16 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const authRoutes = require('./routes/v1/auth.Route')
+const authRoutes = require('./routes/v1/auth.Route');
+const errorHandler = require("./middleware/errorHandler");
 
 
 // middleware 
 app.use(express.json());
 app.use(cors());
 
-app.use(authRoutes)
+
+app.use('/api/v1/users', authRoutes)
 
 
 // api checking
