@@ -1,25 +1,42 @@
-const express = require('express');
-const mongoose = require('mongoose');
-require('dotenv').config();
-const port = process.env.PORT || 5000;
+const express = require("express");
 const app = express();
+const cors = require("cors");
+const mongoose = require('mongoose');
+
 
 
 // middleware 
 app.use(express.json());
+app.use(cors());
 
 
-// Connect to MongoDB
-mongoose.connect(process.env.URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB...'))
-  .catch(err => console.error('Could not connect to MongoDB...', err));
 
 
-  app.get("/", (req, res) => {
-    res.send("Authentication Server running successfully")
-  })
+// api checking
 
-  app.listen(port, () => {
-console.log(`Authentication server running on port ${port}`);
+app.get("/", (req, res) => {
+    res.send("Authentication server is running");
+  });
+  
 
-  })
+// Error Response for non-existing routes
+app.all("*", (req, res) => {
+    res.send("No routes found")
+})
+
+// Global error Handler
+app.use(errorHandler) ;
+
+
+
+
+// closing the express app on unhandled error
+process.on("unhandledRejection", (error) => {
+    console.log(error.name, error.message);
+    app.close(() => {
+      process.exit(1);
+    })
+});
+
+
+  module.exports = app ;
